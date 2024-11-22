@@ -3,17 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion de Dossiers et Notes</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Gestion de Mémo</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Gestion de Dossiers et Notes</h1>
-    <!-- Conteneur des dossiers -->
-	<div id="folder-container">
-		<!-- Le contenu des dossiers et notes sera généré ici -->
-	</div>
-	
-    <button id="add-folder-btn">Ajouter un Dossier</button>
+    <div class="container">
+        <!-- Barre latérale gauche -->
+        <div id="sidebar" class="sidebar">
+            <h2>Mes Dossiers</h2>
+            <button id="add-folder-btn">Ajouter un Dossier</button>
+            <ul id="folder-list"></ul>
+        </div>
+
+        <!-- Contenu principal -->
+        <div id="main-content" class="main-content">
+            <h2 id="folder-name"></h2>
+            <button id="delete-folder-btn">Supprimer le Dossier</button>
+            <button id="edit-folder-name-btn">Modifier le Nom</button> <!-- Bouton de modification du nom -->
+
+            <div id="subfolder-container">
+                <h3>Sous-dossiers</h3>
+                <button id="add-subfolder-btn">Ajouter un Sous-dossier</button>
+                <ul id="subfolder-list"></ul>
+            </div>
+
+            <div id="notes-container">
+                <h3>Notes</h3>
+                <button id="add-note-btn">Ajouter une Note</button>
+                <ul id="note-list"></ul>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
