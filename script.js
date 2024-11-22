@@ -1,133 +1,210 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const createFolderBtn = document.getElementById('createFolderBtn');
-    const foldersContainer = document.getElementById('folders');
-    const folderTemplate = document.getElementById('folderTemplate');
+// Structure initiale pour localStorage
+const initialData = {
+    folders: [
+        {
+            id: 1,
+            name: "Dossier 1",
+            notes: [
+                { id: 1, content: "Note 1 dans Dossier 1" },
+                { id: 2, content: "Note 2 dans Dossier 1" }
+            ],
+            subfolders: []
+        }
+    ]
+};
 
-    // Chargement des dossiers depuis le stockage local
-    loadFolders();
+// Initialiser les données dans localStorage si ce n'est pas déjà fait
+if (!localStorage.getItem('memoData')) {
+    localStorage.setItem('memoData', JSON.stringify(initialData));
+}
 
-    // Créer un dossier
-    createFolderBtn.addEventListener('click', () => {
-        const folderElement = folderTemplate.content.cloneNode(true);
-        const folderName = folderElement.querySelector('h3');
-        const addNoteBtn = folderElement.querySelector('.addNoteBtn');
-        const addSubFolderBtn = folderElement.querySelector('.addSubFolderBtn');
-        const notesContainer = folderElement.querySelector('.notes');
-        const subFoldersContainer = folderElement.querySelector('.subFolders');
+// Fonction pour récupérer les données de localStorage
+function getMemoData() {
+    return JSON.parse(localStorage.getItem('memoData'));
+}
 
-        // Ajouter une note
-        addNoteBtn.addEventListener('click', () => {
-            const note = document.createElement('div');
-            note.classList.add('note');
-            note.innerHTML = `<input type="text" placeholder="Écrire une note..." />`;
-            notesContainer.appendChild(note);
-            saveFolders();
-        });
+// Fonction pour mettre à jour les données dans localStorage
+function setMemoData(data) {
+    localStorage.setItem('memoData', JSON.stringify(data));
+}
 
-        // Ajouter un sous-dossier
-        addSubFolderBtn.addEventListener('click', () => {
-            const subFolderElement = folderTemplate.content.cloneNode(true);
-            const subFolderName = subFolderElement.querySelector('h3');
-            const addSubNoteBtn = subFolderElement.querySelector('.addNoteBtn');
-            const subFolderNotesContainer = subFolderElement.querySelector('.notes');
+// Ajouter un dossier
+function addFolder(parentId = null) {
+    const data = getMemoData();
+    const newFolder = {
+        id: Date.now(),  // Utilisation de Date.now() comme identifiant unique
+        name: `Nouveau Dossier`,
+        notes: [],
+        subfolders: []
+    };
 
-            // Ajouter une note au sous-dossier
-            addSubNoteBtn.addEventListener('click', () => {
-                const note = document.createElement('div');
-                note.classList.add('note');
-                note.innerHTML = `<input type="text" placeholder="Écrire une note..." />`;
-                subFolderNotesContainer.appendChild(note);
-                saveFolders();
-            });
+    if (parentId === null) {
+        data.folders.push(newFolder);
+    } else {
+        const parentFolder = findFolderById(data.folders, parentId);
+        parentFolder.subfolders.push(newFolder);
+    }
 
-            subFoldersContainer.appendChild(subFolderElement);
-            saveFolders();
-        });
+    setMemoData(data);
+    renderFolders();
+}
 
-        // Ajouter le dossier à l'interface
-        foldersContainer.appendChild(folderElement);
-        saveFolders();
+// Ajouter une note dans un dossier
+function addNote(folderId) {
+    const data = getMemoData();
+    const folder = findFolderById(data.folders, folderId);
+    const newNote = {
+        id: Date.now(),
+        content: `Nouvelle Note dans ${folder.name}`
+    };
+    folder.notes.push(newNote);
+    setMemoData(data);
+    renderFolders();
+}
+
+// Supprimer un dossier
+function deleteFolder(folderId) {
+    const data = getMemoData();
+    data.folders = deleteFolderRecursive(data.folders, folderId);
+    setMemoData(data);
+    renderFolders();
+}
+
+// Fonction récursive pour supprimer un dossier dans la hiérarchie
+function deleteFolderRecursive(folders, folderId) {
+    return folders.filter(folder => {
+        if (folder.id === folderId) {
+            return false;
+        }
+        folder.subfolders = deleteFolderRecursive(folder.subfolders, folderId);
+        return true;
     });
+}
 
-    // Sauvegarder les dossiers et notes dans localStorage
-    function saveFolders() {
-        const folders = [];
-        const folderElements = document.querySelectorAll('.folder');
+// Supprimer une note
+function deleteNote(folderId, noteId) {
+    const data = getMemoData();
+    const folder = findFolderById(data.folders, folderId);
+    folder.notes = folder.notes.filter(note => note.id !== noteId);
+    setMemoData(data);
+    renderFolders();
+}
 
-        folderElements.forEach(folderElement => {
-            const folder = {
-                name: folderElement.querySelector('h3').innerText,
-                notes: [],
-                subFolders: []
-            };
+// Trouver un dossier par son ID
+function findFolderById(folders, folderId) {
+    for (let folder of folders) {
+        if (folder.id === folderId) {
+            return folder;
+        }
+        const subfolder = findFolderById(folder.subfolders, folderId);
+        if (subfolder) return subfolder;
+    }
+    return null;
+}
 
-            const noteElements = folderElement.querySelectorAll('.note input');
-            noteElements.forEach(note => {
-                folder.notes.push(note.value);
-            });
+// Fonction pour afficher les dossiers et notes
+function renderFolders() {
+    const data = getMemoData();
+    const container = document.getElementById('folder-container');
+    container.innerHTML = ''; // Effacer l'ancien contenu
 
-            const subFolderElements = folderElement.querySelectorAll('.subFolders .folder');
-            subFolderElements.forEach(subFolderElement => {
-                const subFolder = {
-                    name: subFolderElement.querySelector('h3').innerText,
-                    notes: []
-                };
-
-                const subNoteElements = subFolderElement.querySelectorAll('.note input');
-                subNoteElements.forEach(note => {
-                    subFolder.notes.push(note.value);
-                });
-
-                folder.subFolders.push(subFolder);
-            });
-
-            folders.push(folder);
-        });
-
-        localStorage.setItem('folders', JSON.stringify(folders));
+    // Fonction récursive pour afficher les dossiers et sous-dossiers
+    function renderFolder(folder) {
+        const folderElement = document.createElement('div');
+        folderElement.classList.add('folder');
+        
+        // Affichage du nom du dossier avec bouton "Modifier"
+        const folderNameHtml = `
+            <span class="folder-name" id="folder-name-${folder.id}">
+                ${folder.name}
+            </span>
+            <button onclick="editFolderName(${folder.id})">Modifier</button>
+            <button class="delete" onclick="deleteFolder(${folder.id})">Supprimer</button>
+        `;
+        
+        folderElement.innerHTML = `
+            <h3>
+                ${folderNameHtml}
+            </h3>
+            <ul class="notes" id="folder-${folder.id}">
+                ${folder.notes.map(note => `
+                    <li id="note-${note.id}">
+                        <span class="note-content" id="note-content-${note.id}">
+                            ${note.content}
+                        </span>
+                        <button onclick="editNoteContent(${folder.id}, ${note.id})">Modifier</button>
+                        <button onclick="deleteNote(${folder.id}, ${note.id})">Supprimer</button>
+                    </li>`).join('')}
+            </ul>
+            <button class="add-note" onclick="addNote(${folder.id})">Ajouter une Note</button>
+            <button onclick="addFolder(${folder.id})">Ajouter un Sous-dossier</button>
+            <div class="subfolders">
+                ${folder.subfolders.map(subfolder => renderFolder(subfolder)).join('')}
+            </div>
+        `;
+        return folderElement.outerHTML;
     }
 
-    // Charger les dossiers depuis le localStorage
-    function loadFolders() {
-        const savedFolders = JSON.parse(localStorage.getItem('folders')) || [];
-        savedFolders.forEach(folder => {
-            const folderElement = folderTemplate.content.cloneNode(true);
-            const folderName = folderElement.querySelector('h3');
-            folderName.innerText = folder.name;
-            const addNoteBtn = folderElement.querySelector('.addNoteBtn');
-            const addSubFolderBtn = folderElement.querySelector('.addSubFolderBtn');
-            const notesContainer = folderElement.querySelector('.notes');
-            const subFoldersContainer = folderElement.querySelector('.subFolders');
+    data.folders.forEach(folder => {
+        container.innerHTML += renderFolder(folder);
+    });
+}
 
-            // Charger les notes du dossier
-            folder.notes.forEach(noteText => {
-                const note = document.createElement('div');
-                note.classList.add('note');
-                note.innerHTML = `<input type="text" value="${noteText}" />`;
-                notesContainer.appendChild(note);
-            });
+// Fonction pour afficher un champ de texte pour éditer le nom du dossier
+function editFolderName(folderId) {
+    const folder = findFolderById(getMemoData().folders, folderId);
+    const folderElement = document.getElementById(`folder-name-${folderId}`);
+    folderElement.innerHTML = `
+        <input type="text" id="edit-folder-name" value="${folder.name}" />
+        <button onclick="saveFolderName(${folderId})">Sauvegarder</button>
+        <button onclick="cancelEditFolderName(${folderId})">Annuler</button>
+    `;
+}
 
-            // Charger les sous-dossiers
-            folder.subFolders.forEach(subFolder => {
-                const subFolderElement = folderTemplate.content.cloneNode(true);
-                const subFolderName = subFolderElement.querySelector('h3');
-                subFolderName.innerText = subFolder.name;
-                const addSubNoteBtn = subFolderElement.querySelector('.addNoteBtn');
-                const subFolderNotesContainer = subFolderElement.querySelector('.notes');
+// Fonction pour sauvegarder le nouveau nom du dossier
+function saveFolderName(folderId) {
+    const newName = document.getElementById('edit-folder-name').value;
+    const data = getMemoData();
+    const folder = findFolderById(data.folders, folderId);
+    folder.name = newName;
+    setMemoData(data);
+    renderFolders();
+}
 
-                subFolder.notes.forEach(noteText => {
-                    const note = document.createElement('div');
-                    note.classList.add('note');
-                    note.innerHTML = `<input type="text" value="${noteText}" />`;
-                    subFolderNotesContainer.appendChild(note);
-                });
+// Annuler l'édition du nom du dossier
+function cancelEditFolderName(folderId) {
+    renderFolders(); // Restaure la vue sans modifications
+}
 
-                subFoldersContainer.appendChild(subFolderElement);
-            });
+// Fonction pour afficher un champ de texte pour éditer le contenu de la note
+function editNoteContent(folderId, noteId) {
+    const data = getMemoData();
+    const folder = findFolderById(data.folders, folderId);
+    const note = folder.notes.find(note => note.id === noteId);
+    
+    const noteElement = document.getElementById(`note-content-${noteId}`);
+    noteElement.innerHTML = `
+        <input id="edit-note-content" placeholder="${note.content}"></input>
+        <button onclick="saveNoteContent(${folderId}, ${noteId})">Sauvegarder</button>
+        <button onclick="cancelEditNoteContent(${folderId}, ${noteId})">Annuler</button>
+    `;
+}
 
-            // Ajouter le dossier à l'interface
-            foldersContainer.appendChild(folderElement);
-        });
-    }
-});
+// Sauvegarder le contenu de la note
+function saveNoteContent(folderId, noteId) {
+    const newContent = document.getElementById('edit-note-content').value;
+    const data = getMemoData();
+    const folder = findFolderById(data.folders, folderId);
+    const note = folder.notes.find(note => note.id === noteId);
+    note.content = newContent;
+    setMemoData(data);
+    renderFolders();
+}
 
+// Annuler l'édition du contenu de la note
+function cancelEditNoteContent(folderId, noteId) {
+    renderFolders(); // Restaure la vue sans modifications
+}
+
+// Ajouter un événement pour initialiser le rendu des dossiers
+document.addEventListener('DOMContentLoaded', renderFolders);
