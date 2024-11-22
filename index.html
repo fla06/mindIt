@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionnaire de Mémo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <h1>Gestionnaire de Mémo</h1>
+    <div id="folders"></div>
+    <button id="createFolderBtn">Créer un dossier</button>
+
+    <!-- Template pour un dossier -->
+    <template id="folderTemplate">
+        <div class="folder">
+            <h3 contenteditable="true">Nom du dossier</h3>
+            <button class="addNoteBtn">Ajouter une note</button>
+            <div class="notes"></div>
+            <div class="subFolders"></div>
+            <button class="addSubFolderBtn">Ajouter un sous-dossier</button>
+        </div>
+    </template>
+
+    <script>
+        // Lancer le service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+                console.log('Service Worker enregistré avec succès:', registration);
+            }).catch(function(error) {
+                console.log('Enregistrement du Service Worker échoué:', error);
+            });
+        }
+    </script>
+</body>
+</html>
+
