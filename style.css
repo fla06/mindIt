@@ -1,46 +1,98 @@
-/* Styles de base */
+/* Structure générale */
 body {
     font-family: Arial, sans-serif;
-}
-
-h1 {
-    text-align: center;
-}
-
-/* Dossier et notes */
-.folder {
-    margin: 10px;
-    padding: 10px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-}
-
-.folder h3 {
+    display: flex;
     margin: 0;
+    height: 100vh;
 }
 
-.notes {
+.container {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #f0f0f0;
+    padding: 20px;
+    box-sizing: border-box;
+    border-right: 2px solid #ccc;
+    position: fixed;
+    height: 100%;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+}
+
+#add-folder-btn {
+    margin-top: 10px;
+    padding: 5px 10px;
+}
+
+#folder-list {
     list-style-type: none;
     padding: 0;
 }
 
-.notes li {
+#folder-list li {
     padding: 8px;
     margin: 5px 0;
-    background-color: #f4f4f4;
+    background-color: #ddd;
+    cursor: pointer;
     border-radius: 3px;
-    cursor: move;
 }
 
-/* Ajouter un bouton */
+.main-content {
+    margin-left: 260px;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+h3, h2 {
+    margin: 10px 0;
+}
+
 button {
     padding: 5px 10px;
-    margin: 5px;
+    margin: 10px 0;
 }
 
-/* Zone de dépôt */
-.notes {
-    min-height: 100px;
-    padding: 10px;
-    border: 1px dashed #ccc;
+input {
+    padding: 5px;
+    margin: 5px 0;
+    width: 100%;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    margin: 5px 0;
+    background-color: #f4f4f4;
+    padding: 8px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+ul li button {
+    padding: 3px 8px;
+}
+
+#edit-folder-name-btn {
+    padding: 5px 10px;
+    margin: 10px 0;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+#edit-folder-name-btn:hover {
+    background-color: #45a049;
 }
