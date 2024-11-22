@@ -1,38 +1,46 @@
+/* Styles de base */
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
 }
 
 h1 {
     text-align: center;
 }
 
-#folders {
-    margin-top: 20px;
-}
-
+/* Dossier et notes */
 .folder {
-    border: 1px solid #ccc;
+    margin: 10px;
     padding: 10px;
-    margin: 10px 0;
+    border: 2px solid #ccc;
+    border-radius: 5px;
 }
 
-button {
-    margin-top: 10px;
+.folder h3 {
+    margin: 0;
 }
 
-.notes, .subFolders {
-    margin-left: 20px;
+.notes {
+    list-style-type: none;
+    padding: 0;
 }
 
-.note {
+.notes li {
+    padding: 8px;
     margin: 5px 0;
-    padding: 5px;
-    border: 1px solid #ddd;
+    background-color: #f4f4f4;
+    border-radius: 3px;
+    cursor: move;
 }
 
-.note input {
-    width: 100%;
+/* Ajouter un bouton */
+button {
+    padding: 5px 10px;
+    margin: 5px;
 }
 
+/* Zone de dépôt */
+.notes {
+    min-height: 100px;
+    padding: 10px;
+    border: 1px dashed #ccc;
+}
