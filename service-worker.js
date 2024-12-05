@@ -1,24 +1,24 @@
-const CACHE_NAME = 'memo-app-cache-v1';
+const CACHE_NAME = "menu-app-cache-v1";
 const urlsToCache = [
     '/',
     '/index.html',
     '/style.css',
     '/script.js',
-    '/manifest.json',
-    '/icon.png' // Si vous avez une icône spécifique
+    // Ajoutez ici d'autres fichiers nécessaires au bon fonctionnement de l'application
 ];
 
-// Lors de l'installation du service worker, on met en cache les fichiers nécessaires
+// Installation du service worker
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
+                console.log("Service Worker: Caching files");
                 return cache.addAll(urlsToCache);
             })
     );
 });
 
-// Lors de l'activation, on supprime les anciens caches pour ne garder que le cache actuel
+// Activation du service worker
 self.addEventListener('activate', (event) => {
     const cacheWhitelist = [CACHE_NAME];
     event.waitUntil(
@@ -26,6 +26,7 @@ self.addEventListener('activate', (event) => {
             return Promise.all(
                 cacheNames.map((cacheName) => {
                     if (!cacheWhitelist.includes(cacheName)) {
+                        // Supprimer les anciennes caches
                         return caches.delete(cacheName);
                     }
                 })
@@ -34,25 +35,17 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-// Intercepter les requêtes et servir les fichiers à partir du cache si disponible
+// Intercepter les requêtes réseau et répondre à partir du cache si disponible
 self.addEventListener('fetch', (event) => {
     event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
-            if (cachedResponse) {
-                // Si le fichier est dans le cache, on le retourne
-                return cachedResponse;
-            }
-            // Sinon, on fait une requête réseau pour obtenir le fichier
-            return fetch(event.request).then((networkResponse) => {
-                // Si la réponse est valide, on la met en cache pour la prochaine fois
-                if (networkResponse && networkResponse.status === 200) {
-                    caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, networkResponse.clone());
-                    });
+        caches.match(event.request)
+            .then((cachedResponse) => {
+                // Si la ressource est dans le cache, la retourner
+                if (cachedResponse) {
+                    return cachedResponse;
                 }
-                return networkResponse;
-            });
-        })
+                // Sinon, faire une requête réseau
+                return fetch(event.request);
+            })
     );
 });
-
