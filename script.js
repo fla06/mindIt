@@ -57,7 +57,7 @@ function showContent(folderIndex, folderElement) {
     const notesSection = document.getElementById("notesSection");
     const notesContainer = document.getElementById("notesContainer");
 
-    content.innerHTML = `<h2>Contenu du dossier: ${folder.name}</h2>`;
+    content.innerHTML = `<h2> ${folder.name}</h2>`;
     content.appendChild(folderActions);
     content.appendChild(notesSection);
 
