@@ -8,6 +8,17 @@ function setMemoData(data) {
     localStorage.setItem('memoData', JSON.stringify(data));
 }
 
+// Fonction pour ouvrir/fermer le menu
+document.getElementById("menuToggle").onclick = function() {
+    const sidebar = document.getElementById("sidebar");
+    const content = document.getElementById("main-content");
+    const menuIcon = document.getElementById("menuToggle");
+
+    sidebar.classList.toggle("open");
+    menuIcon.classList.toggle("open");
+    content.classList.toggle("shift"); // Déplace le contenu avec le menu
+};
+
 // Fonction pour ajouter un dossier
 function addFolder() {
     const data = getMemoData();
@@ -69,7 +80,7 @@ function addSubfolder() {
     const folder = data.folders.find(f => f.id === folderId);
     const newSubfolder = {
         id: Date.now(),
-        name: 'Nouveau Sous-dossier',
+        name: 'new Sous-dossier',
         notes: []
     };
     folder.subfolders.push(newSubfolder);
@@ -88,8 +99,8 @@ function renderSubfolderList(folderId) {
         const subfolderItem = document.createElement('li');
         subfolderItem.innerHTML = `
             ${subfolder.name} 
-            <button onclick="deleteSubfolder(${folderId}, ${subfolder.id})">Supprimer</button>
             <button onclick="editSubfolder(${folderId}, ${subfolder.id})">Modifier</button>
+            <button onclick="deleteSubfolder(${folderId}, ${subfolder.id})">Supprimer</button>
         `;
         subfolderList.appendChild(subfolderItem);
     });
