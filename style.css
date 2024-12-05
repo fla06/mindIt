@@ -13,12 +13,18 @@ body {
 
 .sidebar {
     width: 250px;
-    background-color: #f0f0f0;
+    background-color: #9177b1;
     padding: 20px;
     box-sizing: border-box;
     border-right: 2px solid #ccc;
     position: fixed;
+    left: -250px; /* Position initiale cachée du menu */
+    transition: left 0.3s ease; /* Animation du menu */
     height: 100%;
+    /* overflow-x: hidden; */
+}
+.sidebar.open {
+    left: 0; /* Le menu s'ouvre à gauche */
 }
 
 .sidebar h2 {
@@ -38,20 +44,47 @@ body {
 #folder-list li {
     padding: 8px;
     margin: 5px 0;
-    background-color: #ddd;
+    background-color: #ffffff4f;
     cursor: pointer;
     border-radius: 3px;
 }
 
+
+/* Style pour le bouton d'ouverture/fermeture du menu */
+.menu-icon {
+    position: fixed;
+    top: 10px;
+    left: 8px;
+    transition: left 0.3s ease; /* Animation du contenu */
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 200; /* Pour que l'icône reste toujours visible */
+    background-color: #853ce43b;
+}
+
+.menu-icon.open {
+    left: 258px; /* Déplace l'icône de menu quand le menu est ouvert */
+    transition: left 0.3s ease; /* Animation du contenu */
+}
+
 .main-content {
-    margin-left: 260px;
-    padding: 20px;
+    margin-left: 0; /* Le contenu commence à gauche */
+    transition: margin-left 0.3s ease; /* Animation du contenu */
+    padding: 10px;
+    padding-top: 10px;
     width: 100%;
     box-sizing: border-box;
+    background-color: #9177b173;
+}
+
+.main-content.shift {
+    margin-left: 250px; /* Le contenu est décalé lorsque le menu est ouvert */
+    transition: margin-left 0.3s ease; /* Animation du contenu */
 }
 
 h3, h2 {
     margin: 10px 0;
+    padding-left: 25px;
 }
 
 button {
