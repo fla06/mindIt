@@ -11,6 +11,21 @@ body {
     flex: 1;
 }
 
+/* Style pour le logo */
+.logo-container {
+    position: fixed;
+    top: 10px;   /* Espacement depuis le haut */
+    left: 10px;  /* Espacement depuis la gauche */
+    z-index: 300; /* Placer au-dessus des autres éléments si nécessaire */
+}
+
+#logo {
+    width: 100px;   /* Ajustez la taille du logo */
+    height: auto;   /* Maintenir les proportions de l'image */
+    display: block;
+}
+
+
 .sidebar {
     width: 250px;
     background-color: #9177b1;
@@ -53,17 +68,19 @@ body {
 /* Style pour le bouton d'ouverture/fermeture du menu */
 .menu-icon {
     position: fixed;
-    top: 10px;
-    left: 8px;
+    top: 8px;
+    left: 0px;
     transition: left 0.3s ease; /* Animation du contenu */
     font-size: 20px;
     cursor: pointer;
     z-index: 200; /* Pour que l'icône reste toujours visible */
     background-color: #853ce43b;
+    padding: 5px 6px 5px 3px;
+    border-radius: 0% 25% 25% 0%;
 }
 
 .menu-icon.open {
-    left: 258px; /* Déplace l'icône de menu quand le menu est ouvert */
+    left: 248px; /* Déplace l'icône de menu quand le menu est ouvert */
     transition: left 0.3s ease; /* Animation du contenu */
 }
 
@@ -82,7 +99,12 @@ body {
     transition: margin-left 0.3s ease; /* Animation du contenu */
 }
 
-h3, h2 {
+h2 {
+    margin: 6px 0px 10px 0px;
+    padding-left: 25px;
+}
+
+h3 {
     margin: 10px 0;
     padding-left: 25px;
 }
@@ -116,16 +138,60 @@ ul li button {
     padding: 3px 8px;
 }
 
+.dossier-top{
+	margin-top: -50px;
+}
+.buton-dossier{
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;        /* Aligne verticalement au centre */
+}
+
 #edit-folder-name-btn {
-    padding: 5px 10px;
-    margin: 10px 0;
-    background-color: #4CAF50;
+    padding: 5px 5px;
+    margin: 20px 0px 10px 0;
+    background-color: #9177b173;
     color: white;
     border: none;
     cursor: pointer;
-    border-radius: 3px;
+    border-radius: 30px;
+    margin-right: 3px;
 }
 
 #edit-folder-name-btn:hover {
-    background-color: #45a049;
+    background-color: #9177b1b0;
 }
+
+#delete-folder-btn {
+    padding: 5px 5px;
+    margin: 20px 0px 10px 0;
+    background-color: #9177b173;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 30px;
+    margin-right: 3px;
+}
+
+#delete-folder-btn:hover {
+    background-color: #9177b1b0;
+}
+
+
+
+#img-modif{
+	display: flex;
+	justify-content: center;
+	align-items: center;  
+    width: 18px;   /* Ajustez la taille du logo */
+    height: auto;   /* Maintenir les proportions de l'image */
+}
+
+#img-suppr{
+	display: flex;
+	justify-content: center;
+	align-items: center;  
+    width: 18px;   /* Ajustez la taille du logo */
+    height: auto;   /* Maintenir les proportions de l'image */
+}
+
