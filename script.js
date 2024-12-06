@@ -152,9 +152,9 @@ function renderNoteList(folderId) {
     folder.notes.forEach(note => {
         const noteItem = document.createElement('li');
         noteItem.innerHTML = `
-            ${note.content} 
-            <button onclick="editNoteContent(${folderId}, ${note.id})">Modifier</button>
-            <button onclick="deleteNote(${folderId}, ${note.id})">Supprimer</button>
+            <span>${note.content} </span>
+            <button onclick="editNoteContent(${folderId}, ${note.id})"><img src="static/modif.png" alt="Modifier" id="img-modif"/></button>
+            <button onclick="deleteNote(${folderId}, ${note.id})"><img src="static/suppr.png" alt="Supprimer" id="img-suppr"/></button>
         `;
         noteList.appendChild(noteItem);
     });
