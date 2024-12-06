@@ -7,23 +7,38 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Logo en haut à gauche -->
+	<!--<div class="logo-container">
+        <img src="static/logo.png" alt="Logo" id="logo"/>
+    </div> -->
+    
     <!-- Icône pour ouvrir/fermer le menu -->
-    <div id="menuToggle" class="menu-icon"> ☰ </div>
+    <div id="menuToggle" class="menu-icon open"> ☰ </div>
     
     <div class="container">
         <!-- Barre latérale gauche -->
-        <div id="sidebar" class="sidebar">
-            <h2>Mes Dossiers</h2>
+        <div id="sidebar" class="sidebar open">
+            <h2>Mind-It</h2>
             <button id="add-folder-btn">Ajouter un Dossier</button>
             <ul id="folder-list"></ul>
         </div>
 
         <!-- Contenu principal -->
-        <div id="main-content" class="main-content">
+        <div id="main-content" class="main-content shift">
             <h2 id="folder-name"></h2>
-            <button id="delete-folder-btn">Supprimer le Dossier</button>
-            <button id="edit-folder-name-btn">Modifier le Nom</button> <!-- Bouton de modification du nom -->
-
+            <div class="dossier-top">
+		        <div class="buton-dossier">
+		        	<!-- Bouton de modification du nom -->
+		        	<button id="edit-folder-name-btn">
+		        		<img src="static/modif.png" alt="renommer" id="img-modif"/>
+		        	</button> 
+		        
+		        	<button id="delete-folder-btn">
+		        		<img src="static/suppr.png" alt="supprimer" id="img-suppr"/>
+		        	</button>
+				</div>
+			</div>
+			
             <div id="subfolder-container">
                 <h3>Sous-dossiers</h3>
                 <button id="add-subfolder-btn">Ajouter un Sous-dossier</button>
