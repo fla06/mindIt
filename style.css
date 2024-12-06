@@ -4,7 +4,9 @@ body {
     display: flex;
     margin: 0;
     height: 100vh;
+    background-color: #9177b173;
 }
+
 .title {
 	text-align: center;
 }
@@ -100,7 +102,6 @@ body {
     padding-top: 10px;
     width: 100%;
     box-sizing: border-box;
-    background-color: #9177b173;
     min-width: 65%;
 }
 
