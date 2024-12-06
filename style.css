@@ -5,6 +5,9 @@ body {
     margin: 0;
     height: 100vh;
 }
+.title {
+	text-align: center;
+}
 
 .container {
     display: flex;
@@ -44,6 +47,10 @@ body {
 
 .sidebar h2 {
     margin-top: 0;
+    padding-left: 0px;
+    font-family: Gothic;
+    font-style: oblique 18deg;
+    font-weight: 800;
 }
 
 #add-folder-btn {
@@ -62,6 +69,8 @@ body {
     background-color: #ffffff4f;
     cursor: pointer;
     border-radius: 3px;
+    display: flex;
+    justify-content: space-between;
 }
 
 
@@ -92,6 +101,7 @@ body {
     width: 100%;
     box-sizing: border-box;
     background-color: #9177b173;
+    min-width: 65%;
 }
 
 .main-content.shift {
@@ -102,16 +112,18 @@ body {
 h2 {
     margin: 6px 0px 10px 0px;
     padding-left: 25px;
+    color: #4c0d6ff2;
 }
 
 h3 {
     margin: 10px 0;
     padding-left: 25px;
+    color: #4c0d6ff2;
 }
 
 button {
     padding: 5px 10px;
-    margin: 10px 0;
+	/* margin: 10px 0; */
 }
 
 input {
@@ -125,21 +137,32 @@ ul {
     padding: 0;
 }
 
-ul li {
+.main-content ul li {
     margin: 5px 0;
-    background-color: #f4f4f4;
-    padding: 8px;
+    background-color: #7b70ff30;
+    padding: 0px 7px;
     border-radius: 5px;
     display: flex;
     justify-content: space-between;
+	align-items: center; /* Aligne les éléments verticalement au centre */
 }
 
-ul li button {
+.main-content ul li button {
     padding: 3px 8px;
+	margin-left: 10px; /* Espacement entre les deux boutons */
+	margin: 5px;
+}
+
+.main-content ul li button:first-child {
+  margin-left: 0; /* Supprime l'espacement du premier bouton */
+}
+
+.main-content ul li span {
+  flex-grow: 1; /* Le texte occupe tout l'espace restant */
 }
 
 .dossier-top{
-	margin-top: -50px;
+	margin-top: -69px;
 }
 .buton-dossier{
 	display: flex;
